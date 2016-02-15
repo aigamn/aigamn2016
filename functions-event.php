@@ -15,7 +15,6 @@
 					'title',
 					'editor',
 					'thumbnail',
-					'excerpt',
 					'author',
 					'comments'
 				],
@@ -34,7 +33,6 @@
 					'title',
 					'editor',
 					'thumbnail',
-					'excerpt',
 					'author',
 					'comments'
 				],
@@ -53,7 +51,6 @@
 					'title',
 					'editor',
 					'thumbnail',
-					'excerpt',
 					'author',
 					'comments'
 				],
@@ -101,21 +98,21 @@
 
 			if(!$yearSame){
 				// Jan 4th 2016, 6:00pm - Jan 4th 2017, 4:00pm
-				$formattedDate = date("M jS o, g:ia", $startDateTime) . ' - ' . date("M jS o, g:ia",  $endDateTime);
+				$formattedDate = date("D, M jS o, g:ia", $startDateTime) . ' - ' . date("D, M jS o, g:ia",  $endDateTime);
 			}
 			else{
 				if(!$monthSame){
 					// Jan 30th, 6:00pm - Feb 1st, 1:00am, 2016
-					$formattedDate = date("M jS, g:ia", $startDateTime) . ' - ' . date("M jS, g:ia, o", $endDateTime);
+					$formattedDate = date("D, M jS, g:ia", $startDateTime) . ' - ' . date("D, M jS, g:ia, o", $endDateTime);
 				}
 				else{
 					if(!$daySame){
 						// Feb 20th, 1:15pm - Feb 21st, 2:55pm, 2016
-						$formattedDate = date("M jS, g:ia", $startDateTime) . ' - ' . date("M jS, g:ia, o", $endDateTime);
+						$formattedDate = date("D, M jS, g:ia", $startDateTime) . ' - ' . date("D, M jS, g:ia, o", $endDateTime);
 					}
 					else{
 						// Feb 20th, 1:15pm - 2:55pm, 2016
-						$formattedDate = date("M jS, g:ia", $startDateTime) . ' - ' . date("g:ia, o", $endDateTime);
+						$formattedDate = date("D, M jS, g:ia", $startDateTime) . ' - ' . date("g:ia, o", $endDateTime);
 					}
 				}
 
@@ -340,6 +337,39 @@
 		];
 		if($number > 0) {
 			$args['posts_per_page'] = $number;
+		}
+		$query = new WP_Query($args);
+		return $query;
+	}
+
+	function getConferenceEvents($conferenceId){
+		$time = time();
+		$args = [
+			'post_type'	=> ['conference_event'],
+			'meta_query'		=> [
+				'endtime_clause' => [
+					[
+						'key' => 'end_time',
+						'compare' => 'EXISTS',
+					],
+				],
+				'starttime_clause' => [
+					[
+						'key' => 'start_time',
+						'compare' => 'EXISTS',
+					],
+				],
+				'conference_clause' => [
+					[
+						'key' => 'conference',
+						'compare' => '=',
+						'conferenceId' => $conferenceId
+					],
+				],
+			],
+		];
+		if($number > 0) {
+			$args['posts_per_page'] = 0;
 		}
 		$query = new WP_Query($args);
 		return $query;
