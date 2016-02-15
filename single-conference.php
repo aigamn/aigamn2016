@@ -179,6 +179,9 @@
 				<p>No sponsors</p>
 				<small>Contact <a href='mailto:sponsorship@aigaminnesota.org'>sponsorship@aigaminnesota.org</a> if you are interested in sponsoring this event.</small>
 			<?php endif ?>
+			<?php if( get_field('flickr_album_id') ): ?>
+				<div id='images'></div>
+			<?php endif; ?>
 			<br>
 			<br>
 			<br>
@@ -188,53 +191,11 @@
 
 	<?php var_dump( getConferenceEvents($post->ID)->posts ) ?>
 
-	<script src='http://code.jquery.com/jquery-2.1.4.min.js'></script>
-	<script>
-
-		var flickrApiSetup = {
-		    method: "flickr.photosets.getPhotos",
-			photoset_id: "72157653673439639",
-			user_id: "53329065@N03",
-			api_key: "747ffbcf83768699e213f29ccb93aa78",
-			extras: "tags, url_m",
-			format: "json",
-			media: "photos"
-		};
-
-		function getFeaturedPhotos(albumId){
-			var flickerAPI = "https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=814d49bd1862a9aa6b4628a1824de7c9&photoset_id=" + albumId + "&user_id=53329065%40N03&extras=tags%2C+url_m&media=photos&format=json&nojsoncallback=1";
-			return $.getJSON( flickerAPI, function(data){
-				var featuredPhotos = [],
-					i,
-					photo;
-				for(i=0; i<data.photoset.photo.length; i++) {
-					photo = data.photoset.photo[i];
-					if(photo.tags.indexOf("featured") > -1){
-						featuredPhotos.push(photo);
-					}
-				}
-				populatePhotos(featuredPhotos);
-			});
-		}
-
-		function populatePhotos(featuredPhotos){
-			var i,
-				photo;
-
-			for(i=0; i<featuredPhotos.length; i++) {
-				photo = featuredPhotos[i];
-				$('#images').append(photo.url_m + '<br>');
-			}
-		}
-
-		//photos = getFeaturedPhotos("72157653673439639");
-
-			
-
-
-			
-	</script>
-	<div id='images'></div>
+	<?php if( get_field('flickr_album_id') ): ?>
+		<script>
+			photos = shared.getFeaturedPhotos("<?= get_field('flickr_album_id') ?>");
+		</script>
+	<?php endif; ?>
 
 	<?php endwhile; ?>
 
