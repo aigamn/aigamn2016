@@ -366,6 +366,10 @@
 						'conferenceId' => $conferenceId
 					],
 				],
+				'orderby' => [
+					'starttime_clause' => 'ASC',
+					'endtime_clause' => 'ASC',
+				]
 			],
 		];
 		if($number > 0) {

@@ -5,6 +5,7 @@
 
 	<!-- Set all the needed variables and call all needed functions -->
 	<?php
+		$conferenceEvents = getConferenceEvents($post->ID);
 		$eventDate = get_field('start_time');
 		$startTime = get_field('start_time');
 		$endTime = get_field('end_time');
@@ -187,9 +188,20 @@
 			<br>
 			<?php comments_template(); ?>
 		</section>
+		<section id='conference-events'>
+			<?php if($conferenceEvents->have_posts()) : while($conferenceEvents->have_posts()) : $conferenceEvents->the_post(); ?>
+				<?php the_title() ?><br>
+				<?= getFriendlyDateRange( get_field('start_time'), get_field('end_time') ) ?><br>
+				<?= get_field('conference_event_type') ?><br>
+				<?= get_field('presenter_facilitator') ?><br>
+				<br>
+				<br>
+			<?php endwhile; endif; ?>
+			<?php wp_reset_postdata(); ?>
+		</section>
 	</article>
 
-	<?php var_dump( getConferenceEvents($post->ID)->posts ) ?>
+
 
 	<?php if( get_field('flickr_album_id') ): ?>
 		<script>
