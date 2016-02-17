@@ -10,7 +10,7 @@
 <div class='container' id='home'>
 	<h1 class='text-center'>
 		 AIGA Minnesota is the first place to turn for inspiration, professional development,<br class='hidden-xs'>
-		 and excellence in design in Minnesota.
+		 and excellence in design in Minnesota. YO!
 	</h1>
 
 	<div class='social text-center'>
